@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"server/api/v1/controllers"
 
 	"github.com/labstack/echo"
 )
@@ -18,7 +19,10 @@ func GetContributionsInfo(c echo.Context) (err error) {
 		return
 	}
 
-	// controllers.ContributionsInfoQuery(p.Name, p.From, p.To)
+	data, err := controllers.ContributionsInfoQuery(p.Name, p.From, p.To)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
 
-	return c.JSON(http.StatusOK, p)
+	return c.JSON(http.StatusOK, data)
 }
