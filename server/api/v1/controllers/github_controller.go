@@ -4,17 +4,35 @@ import (
 	"context"
 	"server/auth"
 	"server/model"
+	"time"
 
 	"github.com/shurcooL/githubv4"
 )
 
-func ContributionsInfoQuery(name string, from, to githubv4.DateTime) (err error, data model.ContributionsInfo) {
+func ContributionsInfoQuery(name, from, to string) (data model.Weeks, err error) {
+
+	l := "2006-01-02"
+
+	f, err := time.Parse(l, from)
+	if err != nil {
+		return data, err
+	}
+
+	githubTimeFrom := githubv4.NewDateTime(githubv4.DateTime{f})
+
+	t, err := time.Parse(l, to)
+	if err != nil {
+		return data, err
+	}
+
+	githubTimeTo := githubv4.NewDateTime(githubv4.DateTime{t})
+
 	var q struct {
 		User struct {
 			ContributionsCollection struct {
 				ContributionCalendar struct {
-					Weeks struct {
-						ContributionDays struct {
+					Weeks []struct {
+						ContributionDays []struct {
 							ContributionCount githubv4.Int
 							Color             githubv4.String
 						}
@@ -25,8 +43,8 @@ func ContributionsInfoQuery(name string, from, to githubv4.DateTime) (err error,
 	}
 
 	varialble := map[string]interface{}{
-		"from": githubv4.DateTime(from),
-		"to":   githubv4.DateTime(to),
+		"from": githubv4.DateTime(*githubTimeFrom),
+		"to":   githubv4.DateTime(*githubTimeTo),
 		"name": githubv4.String(name),
 	}
 
@@ -34,9 +52,9 @@ func ContributionsInfoQuery(name string, from, to githubv4.DateTime) (err error,
 
 	err = client.Query(context.Background(), &q, varialble)
 	if err != nil {
-		return err, data
+		return data, err
 	}
 
-	data = q.User.ContributionsCollection.ContributionCalendar.Weeks.ContributionDays
-	return nil, data
+	data = q.User.ContributionsCollection.ContributionCalendar.Weeks
+	return data, nil
 }
