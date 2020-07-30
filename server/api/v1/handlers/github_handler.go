@@ -1,4 +1,4 @@
-package v1
+package handlers
 
 import (
 	"net/http"
@@ -17,6 +17,8 @@ func GetContributionsInfo(c echo.Context) (err error) {
 	if err = c.Bind(p); err != nil {
 		return
 	}
+
+	// controllers.ContributionsInfoQuery(p.Name, p.From, p.To)
 
 	return c.JSON(http.StatusOK, p)
 }

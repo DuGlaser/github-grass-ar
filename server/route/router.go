@@ -1,7 +1,7 @@
 package route
 
 import (
-	v1 "server/api/v1"
+	"server/api/v1/handlers"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -17,7 +17,7 @@ func Init() *echo.Echo {
 
 	apiV1 := e.Group("/api/v1")
 	{
-		apiV1.GET("/", v1.GetContributionsInfo)
+		apiV1.GET("/get_contributions_info", handlers.GetContributionsInfo)
 	}
 
 	return e
