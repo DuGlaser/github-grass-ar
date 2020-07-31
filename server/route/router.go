@@ -18,6 +18,7 @@ func Init() *echo.Echo {
 	apiV1 := e.Group("/api/v1")
 	{
 		apiV1.GET("/get_contributions_info", handlers.GetContributionsInfo)
+		apiV1.POST("/get_contributions_info", handlers.GetContributionsInfo)
 	}
 
 	return e
