@@ -10,38 +10,29 @@ namespace Utils
         Prod
     }
 
-    public class Settings {
-        public string BASE_URL;
-
-        public Settings(string BaseUrl) 
-        {
-          this.BASE_URL = BaseUrl;
-        }
-    }
-
     public class Enviroment
     {
     /* Using Unity Cloud Build */
     /* #if ENV_STG */
     /*     public static readonly EnvironmentType Type = EnvironmentType.Stg; */
-    /*     public static readonly Settings settings = new Settings(BaseUrl: Environment.GetEnvironmentVariable("BASE_URL")); */
+    /*     public static readonly string BASE_URL = "http://localhost:3000/api/v1"; */
 
     /* #elif ENV_PROD */
     /*     public static readonly EnvironmentType Type = EnvironmentType.Prod; */
-    /*     public static readonly Settings settings = new Settings(BaseUrl: Environment.GetEnvironmentVariable("BASE_URL")); */
+    /*     public static readonly string BASE_URL = DefineValue.BASE_URL; */
 
     /* #else */
     /*     public static readonly EnvironmentType Type = EnvironmentType.Dev; */
-    /*     public static readonly Settings settings = new Settings(BaseUrl: "http://localhost:3000/api/v1"); */
+    /*     public static readonly string BASE_URL = DefineValue.BASE_URL; */
 
     /* #endif */
 
       #if UNITY_EDITOR
         public static readonly EnvironmentType Type = EnvironmentType.Dev;
-        public static readonly Settings settings = new Settings(BaseUrl: "http://localhost:3000/api/v1");
+        public static readonly string BASE_URL = "http://localhost:3000/api/v1";
       #else
         public static readonly EnvironmentType Type = EnvironmentType.Prod;
-        public static readonly Settings settings = new Settings(BaseUrl: DefineValue.BASE_URL);
+        public static readonly string BASE_URL = DefineValue.BASE_URL;
       #endif
     }
 }
