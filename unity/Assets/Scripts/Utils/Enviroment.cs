@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Utils
 {
@@ -20,6 +21,7 @@ namespace Utils
 
     public class Enviroment
     {
+    /* Using Unity Cloud Build */
     /* #if ENV_STG */
     /*     public static readonly EnvironmentType Type = EnvironmentType.Stg; */
     /*     public static readonly Settings settings = new Settings(BaseUrl: Environment.GetEnvironmentVariable("BASE_URL")); */
@@ -39,7 +41,7 @@ namespace Utils
         public static readonly Settings settings = new Settings(BaseUrl: "http://localhost:3000/api/v1");
       #else
         public static readonly EnvironmentType Type = EnvironmentType.Prod;
-        public static readonly Settings settings = new Settings(BaseUrl: Environment.GetEnvironmentVariable("BASE_URL"));
+        public static readonly Settings settings = new Settings(BaseUrl: DefineValue.BASE_URL);
       #endif
     }
 }
