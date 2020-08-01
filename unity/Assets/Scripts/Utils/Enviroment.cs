@@ -20,18 +20,26 @@ namespace Utils
 
     public class Enviroment
     {
-    #if ENV_STG
-        public static readonly EnvironmentType Type = EnvironmentType.Stg;
-        public static readonly Settings settings = new Settings(BaseUrl: Environment.GetEnvironmentVariable("BASE_URL"));
+    /* #if ENV_STG */
+    /*     public static readonly EnvironmentType Type = EnvironmentType.Stg; */
+    /*     public static readonly Settings settings = new Settings(BaseUrl: Environment.GetEnvironmentVariable("BASE_URL")); */
 
-    #elif ENV_PROD
-        public static readonly EnvironmentType Type = EnvironmentType.Prod;
-        public static readonly Settings settings = new Settings(BaseUrl: Environment.GetEnvironmentVariable("BASE_URL"));
+    /* #elif ENV_PROD */
+    /*     public static readonly EnvironmentType Type = EnvironmentType.Prod; */
+    /*     public static readonly Settings settings = new Settings(BaseUrl: Environment.GetEnvironmentVariable("BASE_URL")); */
 
-    #else
+    /* #else */
+    /*     public static readonly EnvironmentType Type = EnvironmentType.Dev; */
+    /*     public static readonly Settings settings = new Settings(BaseUrl: "http://localhost:3000/api/v1"); */
+
+    /* #endif */
+
+      #if UNITY_EDITOR
         public static readonly EnvironmentType Type = EnvironmentType.Dev;
         public static readonly Settings settings = new Settings(BaseUrl: "http://localhost:3000/api/v1");
-
-    #endif
+      #else
+        public static readonly EnvironmentType Type = EnvironmentType.Prod;
+        public static readonly Settings settings = new Settings(BaseUrl: Environment.GetEnvironmentVariable("BASE_URL"));
+      #endif
     }
 }
