@@ -41,6 +41,8 @@ namespace Web
             Debug.Log(postData);
 
             var url = BaseUrl + EndPoint;
+
+            Utils.CoroutineHandler.StartStaticCoroutine(onSend(url, postData, cb));
         }
 
         private IEnumerator onSend(string url, byte[] postData, Action<Result> cb)
@@ -68,7 +70,7 @@ namespace Web
 
         public T Response<T>()
         {
-          return JsonUtility.FromJson<T>(resJson);
+            return JsonUtility.FromJson<T>(resJson);
         }
     }
 }
