@@ -32,7 +32,7 @@ namespace Utils
 
       #if UNITY_EDITOR
         public static readonly EnvironmentType Type = EnvironmentType.Dev;
-        public static readonly string BaseUrl = "http://localhost:3000/api/v1";
+        public static readonly string BaseUrl = "http://localhost:8080/api/v1";
       #else
         public static readonly EnvironmentType Type = EnvironmentType.Prod;
         public static readonly string BaseUrl = DefineValue.BASE_URL;
