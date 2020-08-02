@@ -1,39 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Api
 {
-  public class Github : Web.ApiBase
-  {
-
-    [Serializable]
-    public struct Reequest
+    public class Github : Web.ApiBase
     {
-        public string name;
-        public string from;
-        public string to;
+
+        [Serializable]
+        public struct Request
+        {
+            public string name;
+            public string from;
+            public string to;
+        }
+
+        public Request reequest;
+
+        [Serializable]
+        public struct Response
+        {
+            public List<ContributionDaysDetail> ContributionDays;
+        }
+
+        [Serializable]
+        public struct ContributionDaysDetail
+        {
+            public int ContributionCount;
+            public string Color;
+        }
+
+        public Response response;
     }
-
-    public Reequest reequest;
-
-    [Serializable]
-    public struct Response
-    {
-      public Weeks[] weeks;
-    }
-
-    [Serializable]
-    public struct  Weeks
-    {
-      public ContributionDays[] contributionDays;
-    }
-
-    [Serializable]
-    public struct ContributionDays 
-    {
-        public int contributionCount;
-        public string color;
-    }
-
-    public Response response;
-  }
 }
