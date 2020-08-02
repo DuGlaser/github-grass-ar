@@ -38,8 +38,6 @@ namespace Web
             string reqJson = JsonUtility.ToJson(request);
             byte[] postData = System.Text.Encoding.UTF8.GetBytes(reqJson);
 
-            Debug.Log(postData);
-
             var url = BaseUrl + EndPoint;
 
             Utils.CoroutineHandler.StartStaticCoroutine(onSend(url, postData, cb));
@@ -68,9 +66,10 @@ namespace Web
             cb(result);
         }
 
-        public T Response<T>()
+        public T[] Response<T>()
         {
-            return JsonUtility.FromJson<T>(resJson);
+            string newJson = Utils.JsonHelper.fixJson(resJson);
+            return Utils.JsonHelper.FromJson<T>(newJson);
         }
     }
 }
