@@ -30,7 +30,7 @@ public class sample : MonoBehaviour
         {
             if (result.isSucceeded)
             {
-                var res = githubApi.Response<Api.Github.Response>();
+                var res = githubApi.ReturnResponse<Api.Github.Response>();
                 Debug.Log(res[0].ContributionDays[0].Color);
             }
             else
