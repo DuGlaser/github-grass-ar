@@ -75,3 +75,7 @@ InitTestScene*.unity
 # define value
 Assets/Scripts/Constants
 Assets/Scripts/Constants.meta
+
+# LowPoly Environment Pack
+Assets/LowPoly Environment Pack
+Assets/LowPoly Environment Pack.meta
