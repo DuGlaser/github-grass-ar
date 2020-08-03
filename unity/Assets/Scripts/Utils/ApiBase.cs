@@ -5,9 +5,15 @@ using UnityEngine.Networking;
 
 namespace Web
 {
+    /// <summary>
+    /// Base class of HTTP
+    /// </summary>
     public class ApiBase
     {
 
+        /// <summary>
+        /// A struct to set http results
+        /// <summary>
         public struct Result
         {
             public bool isSucceeded { get; private set; }
@@ -32,6 +38,12 @@ namespace Web
 
         public string EndPoint { get; set; }
 
+        /// <summary>
+        /// Convert the request to json and perform http(POST)
+        /// </summary>
+        /// <typeparam name="T">Request type</typeparam>
+        /// <param name="request">Request obj</param>
+        /// <param name="cb">Callback func</param>
         public void Send<T>(ref T request, Action<Result> cb)
         {
             string reqJson = JsonUtility.ToJson(request);
@@ -42,6 +54,13 @@ namespace Web
             Utils.CoroutineHandler.StartStaticCoroutine(onSend(url, postData, cb));
         }
 
+        /// <summary>
+        /// Perform http
+        /// </summary>
+        /// <param name="url">Target url</param>
+        /// <param name="postData">Post data</param>
+        /// <param name="cb">Callback func</param>
+        /// <returns>Coroutine</returns>
         private IEnumerator onSend(string url, byte[] postData, Action<Result> cb)
         {
             var req = new UnityWebRequest(url, "POST");
@@ -65,6 +84,11 @@ namespace Web
             cb(result);
         }
 
+        /// <summary>
+        /// Return http response
+        /// </summary>
+        /// <typeparam name="T"> Response type</typeparam>
+        /// <returns>Response obj</returns>
         public virtual T ReturnResponse<T>()
         {
             return JsonUtility.FromJson<T>(resJson);

@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Api
 {
+    /// <summary>
+    /// Github api class
+    /// </summary>
     public class Github : Web.ApiBase
     {
 
+        /// <summary>
+        /// Request params
+        /// </summary>
         [Serializable]
         public struct Request
         {
@@ -17,6 +22,9 @@ namespace Api
 
         public Request reequest;
 
+        /// <summary>
+        /// Response params
+        /// </summary>
         [Serializable]
         public struct Response
         {
@@ -32,6 +40,11 @@ namespace Api
 
         public Response response;
 
+        /// <summary>
+        /// Deserialized json array and return response obj
+        /// </summary>
+        /// <typeparam name="T"> Response type</typeparam>
+        /// <returns>Response obj</returns>
         public new T[] ReturnResponse<T>()
         {
             string newJson = Utils.JsonHelper.fixJson(resJson);
