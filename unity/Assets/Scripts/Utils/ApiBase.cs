@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -29,7 +28,7 @@ namespace Web
 
         private readonly string BaseUrl = Utils.Enviroment.BaseUrl;
 
-        private string resJson;
+        protected string resJson;
 
         public string EndPoint { get; set; }
 
@@ -66,10 +65,9 @@ namespace Web
             cb(result);
         }
 
-        public T[] Response<T>()
+        public virtual T ReturnResponse<T>()
         {
-            string newJson = Utils.JsonHelper.fixJson(resJson);
-            return Utils.JsonHelper.FromJson<T>(newJson);
+            return JsonUtility.FromJson<T>(resJson);
         }
     }
 }

@@ -31,5 +31,11 @@ namespace Api
         }
 
         public Response response;
+
+        public new T[] ReturnResponse<T>()
+        {
+            string newJson = Utils.JsonHelper.fixJson(resJson);
+            return Utils.JsonHelper.FromJson<T>(newJson);
+        }
     }
 }
