@@ -6,5 +6,6 @@ type Weeks []struct {
 	ContributionDays []struct {
 		ContributionCount githubv4.Int
 		Color             githubv4.String
+		Date              string
 	}
 }
