@@ -20,47 +20,59 @@ public class PrefabController : MonoBehaviour
     [SerializeField]
     GameObject GITHUB_LEVEL_5;
 
-    [SerializeField]
-    GameObject placementIndicator;
-
-    private Vector3 prefabTransfrom;
+    public float startPrefabPositionX = -0.175f;
     public static PrefabController instance;
+
+    private GameObject curGitHubObject;
+    private float curPrefabPositionX;
 
     void Awake()
     {
         instance = this;
-        prefabTransfrom = new Vector3(-placementIndicator.GetComponent<Renderer>().bounds.size.x / 2, 0, 0);
+        curPrefabPositionX = startPrefabPositionX;
     }
 
-    public void CreateGithubObject(string color, string date, int count, GameObject parent)
+    public void CreateGithubObjects(Api.Github.Response[] res, GameObject parent)
     {
-        prefabTransfrom.x += placementIndicator.GetComponent<Renderer>().bounds.size.x / 7;
+        foreach (var item in res[0].ContributionDays)
+        {
+            Debug.Log(item.ContributionCount);
+            Debug.Log(item.Date);
+            Debug.Log(item.Color);
 
-        GameObject instantiatePrefab;
+            SelectObject(item.Color);
 
+            GameObject obj = Instantiate(curGitHubObject, parent.transform);
+            obj.transform.localPosition = new Vector3(curPrefabPositionX, 0, 0);
+            curPrefabPositionX += 0.068f;
+        }
+
+        curPrefabPositionX = startPrefabPositionX;
+    }
+
+    private void SelectObject(string color)
+    {
         switch (color)
         {
             case "#216e39":
-                instantiatePrefab = GITHUB_LEVEL_5;
+                curGitHubObject = GITHUB_LEVEL_5;
                 break;
 
             case "#30c14e":
-                instantiatePrefab = GITHUB_LEVEL_4;
+                curGitHubObject = GITHUB_LEVEL_4;
                 break;
 
             case "#40c463":
-                instantiatePrefab = GITHUB_LEVEL_3;
+                curGitHubObject = GITHUB_LEVEL_3;
                 break;
 
             case "#9be9a8":
-                instantiatePrefab = GITHUB_LEVEL_2;
+                curGitHubObject = GITHUB_LEVEL_2;
                 break;
 
             default:
-                instantiatePrefab = GITHUB_LEVEL_1;
+                curGitHubObject = GITHUB_LEVEL_1;
                 break;
         }
-
-        Instantiate(instantiatePrefab, prefabTransfrom, Quaternion.identity, parent.transform);
     }
 }

@@ -9,12 +9,10 @@ using UnityEngine.XR.ARSubsystems;
 public class MainController : MonoBehaviour
 {
 
-    public GameObject sampleToObject;
+    public GameObject placeToObjectGroup;
 
     private ARSessionOrigin arOrigin;
-    private ARRaycastManager raycastManager;
-    private Pose placementPose;
-    private bool placementPoseIsValid = false;
+    private PlacementIndicator placementIndicator;
 
     private Api.Github githubApi;
     private bool isApiSucceeded = false;
@@ -23,28 +21,8 @@ public class MainController : MonoBehaviour
     {
         githubApi = new Api.Github();
         sendGithubApi();
-    }
 
-    void Update()
-    {
-        // for debug
-        if (Input.GetKeyDown("space") && isApiSucceeded)
-        {
-            var res = githubApi.ReturnResponse<Api.Github.Response>();
-            foreach (var item in res[0].ContributionDays)
-            {
-                Debug.Log(item.ContributionCount);
-                Debug.Log(item.Date);
-                Debug.Log(item.Color);
-
-                /* prefabController.CreateGithubObject(item.Color, item.Date, item.ContributionCount, objectToPlace); */
-            }
-        }
-
-        if (placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            PlaceObject();
-        }
+        placementIndicator = GetComponent<PlacementIndicator>();
     }
 
     private void sendGithubApi()
@@ -68,18 +46,18 @@ public class MainController : MonoBehaviour
         });
     }
 
-    private void PlaceObject()
+    public void OnPlaceGithubObject()
     {
-        Instantiate(sampleToObject, placementPose.position, placementPose.rotation);
+        Vector3 placeToObjectPosition = PlacementIndicator.instance.transform.position;
+        Quaternion placeToObjectRotation = PlacementIndicator.instance.transform.rotation;
 
-/*         var res = githubApi.ReturnResponse<Api.Github.Response>(); */
-/*         foreach (var item in res[0].ContributionDays) */
-/*         { */
-/*             Debug.Log(item.ContributionCount); */
-/*             Debug.Log(item.Date); */
-/*             Debug.Log(item.Color); */
+        GameObject parent = Instantiate(
+            placeToObjectGroup,
+            placeToObjectPosition,
+            placeToObjectRotation
+            );
 
-/*             prefabController.CreateGithubObject(item.Color, item.Date, item.ContributionCount, objectToPlace); */
-/*         } */
+        var res = githubApi.ReturnResponse<Api.Github.Response>();
+        PrefabController.instance.CreateGithubObjects(res, parent);
     }
 }
