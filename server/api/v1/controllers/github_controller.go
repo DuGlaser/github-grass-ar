@@ -35,6 +35,7 @@ func ContributionsInfoQuery(name, from, to string) (data model.Weeks, err error)
 						ContributionDays []struct {
 							ContributionCount githubv4.Int
 							Color             githubv4.String
+							Date              string
 						}
 					}
 				}

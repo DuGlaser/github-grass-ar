@@ -36,6 +36,7 @@ namespace Api
         {
             public int ContributionCount;
             public string Color;
+            public string Date;
         }
 
         public Response response;
