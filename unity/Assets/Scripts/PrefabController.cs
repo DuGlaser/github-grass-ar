@@ -20,37 +20,47 @@ public class PrefabController : MonoBehaviour
     [SerializeField]
     GameObject GITHUB_LEVEL_5;
 
-    private Vector3 prefabTransfrom = new Vector3(-0.35f, 0, 0);
+    [SerializeField]
+    GameObject placementIndicator;
 
-    public void CreateGithubObject(string color, string date, int count)
+    private Vector3 prefabTransfrom;
+    public static PrefabController instance;
+
+    void Awake()
     {
-        prefabTransfrom.x += .1f;
+        instance = this;
+        prefabTransfrom = new Vector3(-placementIndicator.GetComponent<Renderer>().bounds.size.x / 2, 0, 0);
+    }
+
+    public void CreateGithubObject(string color, string date, int count, GameObject parent)
+    {
+        prefabTransfrom.x += placementIndicator.GetComponent<Renderer>().bounds.size.x / 7;
 
         GameObject instantiatePrefab;
 
         switch (color)
         {
-          case "#216e39":
-            instantiatePrefab = GITHUB_LEVEL_5;
-            break;
-        
-          case "#30c14e":
-            instantiatePrefab = GITHUB_LEVEL_4;
-            break;
+            case "#216e39":
+                instantiatePrefab = GITHUB_LEVEL_5;
+                break;
 
-          case "#40c463":
-            instantiatePrefab = GITHUB_LEVEL_3;
-            break;
+            case "#30c14e":
+                instantiatePrefab = GITHUB_LEVEL_4;
+                break;
 
-          case "#9be9a8":
-            instantiatePrefab = GITHUB_LEVEL_2;
-            break;
+            case "#40c463":
+                instantiatePrefab = GITHUB_LEVEL_3;
+                break;
 
-          default:
-            instantiatePrefab = GITHUB_LEVEL_1;
-              break;
+            case "#9be9a8":
+                instantiatePrefab = GITHUB_LEVEL_2;
+                break;
+
+            default:
+                instantiatePrefab = GITHUB_LEVEL_1;
+                break;
         }
 
-        Instantiate(instantiatePrefab, prefabTransfrom, Quaternion.identity);
+        Instantiate(instantiatePrefab, prefabTransfrom, Quaternion.identity, parent.transform);
     }
 }
