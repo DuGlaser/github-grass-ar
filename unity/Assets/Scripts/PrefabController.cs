@@ -6,24 +6,16 @@ using UnityEngine;
 public class PrefabController : MonoBehaviour
 {
     [SerializeField]
-    GameObject GITHUB_LEVEL_1;
+    private GameObject graph;
+
+    private List<GameObject> graphs = new List<GameObject>();
+    private List<float> graphsTopScale = new List<float>();
 
     [SerializeField]
-    GameObject GITHUB_LEVEL_2;
-
-    [SerializeField]
-    GameObject GITHUB_LEVEL_3;
-
-    [SerializeField]
-    GameObject GITHUB_LEVEL_4;
-
-    [SerializeField]
-    GameObject GITHUB_LEVEL_5;
+    private float speed = 2.0f;
 
     public float startPrefabPositionX = -0.175f;
     public static PrefabController instance;
-
-    private GameObject curGitHubObject;
     private float curPrefabPositionX;
 
     void Awake()
@@ -31,6 +23,21 @@ public class PrefabController : MonoBehaviour
         instance = this;
         curPrefabPositionX = startPrefabPositionX;
     }
+
+    void Update()
+    {
+        for (var i = 0; i < graphs.Count; i++)
+        {
+            GameObject obj = graphs[i];
+            Vector3 curScale = graphs[i].transform.localScale;
+            if (curScale.y < graphsTopScale[i])
+            {
+                curScale.y = Mathf.MoveTowards(curScale.y, graphsTopScale[i], Time.deltaTime * speed);
+                obj.transform.localScale = curScale;
+            }
+        }
+    }
+
 
     public void CreateGithubObjects(Api.Github.Response[] res, GameObject parent)
     {
@@ -40,39 +47,21 @@ public class PrefabController : MonoBehaviour
             Debug.Log(item.Date);
             Debug.Log(item.Color);
 
-            SelectObject(item.Color);
-
-            GameObject obj = Instantiate(curGitHubObject, parent.transform);
+            GameObject obj = Instantiate(graph, parent.transform);
             obj.transform.localPosition = new Vector3(curPrefabPositionX, 0, 0);
             curPrefabPositionX += 0.068f;
+
+            Color color = default(Color);
+            if (ColorUtility.TryParseHtmlString(item.Color, out color))
+            {
+                obj.transform.GetChild(0).GetComponent<Renderer>().material.color = color;
+            }
+
+            graphs.Add(obj);
+            graphsTopScale.Add(obj.transform.localScale.y * item.ContributionCount);
+
         }
 
         curPrefabPositionX = startPrefabPositionX;
-    }
-
-    private void SelectObject(string color)
-    {
-        switch (color)
-        {
-            case "#216e39":
-                curGitHubObject = GITHUB_LEVEL_5;
-                break;
-
-            case "#30c14e":
-                curGitHubObject = GITHUB_LEVEL_4;
-                break;
-
-            case "#40c463":
-                curGitHubObject = GITHUB_LEVEL_3;
-                break;
-
-            case "#9be9a8":
-                curGitHubObject = GITHUB_LEVEL_2;
-                break;
-
-            default:
-                curGitHubObject = GITHUB_LEVEL_1;
-                break;
-        }
     }
 }
